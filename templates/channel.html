@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block newscripts %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='channelScript.js') }}"></script>
+{% endblock %}
+
+{% block content1 %}
+<h3>Welcome to the {{ channel }} Channel!</h3>
+
+<textarea class="form-control" id = "messContent" rows="1" placeholder="Write your message"></textarea>
+<button data-channel = "{{ channel }}" type="button" class="btn btn-primary mt-1" id = "sendMessage">Send</button>
+
+<div class="" id="messageDiv">
+  <p>First test message</p>
+  <!-- first render existing messages: -->
+  {% for mes in messages %}
+  <p>{{ mes }}</p>
+  {% endfor %}
+</div>
+
+{% endblock %}
