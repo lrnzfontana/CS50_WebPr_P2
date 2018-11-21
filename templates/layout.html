@@ -23,7 +23,10 @@
                 <button type="button" class = "btn btn-primary" data-toggle = "modal" data-target = "#channelModal">Create a Channel</button>
               </div>
         <ul class = "mt-3" id='listChannels'>
-          <li>Test</li><li>Test</li><li>Test</li><li>Test</li><li>Test</li><li>Test</li><li>Test</li><li>Test</li><li>Test</li><li>Test</li><li>Test</li><li>Test</li><li>Test</li>
+          <li>Test</li>
+          {% for chan in channels %}
+          <li> <a href="/channel/{{ chan }}">{{ chan }}</a></li>
+          {% endfor %}
         </ul>
       </div>
       <!-- end column -->
@@ -45,13 +48,16 @@
               </button>
             </div>
             <div class="modal-body">
+              <form action="{{ url_for('handle_channel') }}" method="post">
                 <div class="form-group">
                   <input id = "chanNameText" type="text" name="channame" class="form-control" placeholder="Your channel">
+                  </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button id="createChanButModal" type="submit" class="btn btn-primary" data-dismiss='modal'>Create Channel</button>
-                  </div>
+                    <!-- if I add data-dismiss here, it doesn't submit the form: -->
+                    <button id="createChanButModal" type="submit" class="btn btn-primary">Create Channel</button>
                 </div>
+              </form>
             </div>
 
           </div>
