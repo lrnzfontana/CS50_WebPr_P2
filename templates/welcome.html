@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 
+{% block newscripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+{% endblock %}
+
 {% block content1 %}
 <h3>Hello {{ uname }}, please select a channel on the left menu, or create your own!</h3>
 {% endblock %}

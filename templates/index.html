@@ -1,10 +1,14 @@
 {% extends "layout.html" %}
 
+{% block newscripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+{% endblock %}
+
 {% block content1 %}
 <h2>What's your name?</h2>
-<form method="post">
+<form method="post" id='nameForm'>
   <div class="form-group">
-    <input type="text" name="uname" class="form-control" placeholder="Your name">
+    <input id='unameid' type="text" name="uname" class="form-control" placeholder="Your name">
   </div>
   <button type="submit" class="btn btn-primary">Enter the Chatter</button>
 </form>

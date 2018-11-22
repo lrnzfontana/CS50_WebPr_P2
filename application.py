@@ -1,9 +1,10 @@
 import os
 
-from flask import Flask, session, request, render_template, redirect
+from flask import Flask, session, request, render_template, redirect, jsonify
 from flask_session import Session
 from flask_socketio import SocketIO, emit
 from functools import wraps
+## import json
 
 
 app = Flask(__name__)
@@ -30,9 +31,11 @@ def login_required(f):
 @socketio.on("send message")
 def mess(data):
     message = data["message"]
+    # Make dictionary(for now only message content, then add user id)
+    message_dict = {"content": message}
     channel = data["channel"]
     # add message:
-    channel_messages[channel].append(message)
+    channel_messages[channel].append(message_dict)
     emit("receive message", {"message": message}, broadcast=True)
 
 
@@ -60,3 +63,11 @@ def handle_channel():
 def channelContent(channame):
     return render_template("channel.html", channel = channame, channels = channel_list,
     messages = channel_messages[channame])
+
+@app.route("/message_list", methods=["POST"])
+def message_list():
+
+    # Channel we need message list for
+    channel = request.form.get("channel")
+    return jsonify({"messages": channel_messages[channel]})
+    #return jsonify({"messages": "hello"})
