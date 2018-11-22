@@ -31,12 +31,13 @@ def login_required(f):
 @socketio.on("send message")
 def mess(data):
     message = data["message"]
+    user = data["user"]
     # Make dictionary(for now only message content, then add user id)
-    message_dict = {"content": message}
+    message_dict = {"content": message, "user": user}
     channel = data["channel"]
     # add message:
     channel_messages[channel].append(message_dict)
-    emit("receive message", {"message": message}, broadcast=True)
+    emit("receive message", {"message": message, "user": user}, broadcast=True)
 
 
 @app.route("/", methods=["GET", "POST"])

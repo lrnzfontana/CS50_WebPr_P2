@@ -8,7 +8,7 @@ toggleChannelList = function() {
   }
 }
 
-
+// Send request when channel page is loaded, to get messages from server:
 sendRequest = function() {
   // Get channel name to send to server:
 
@@ -25,17 +25,27 @@ sendRequest = function() {
       // Extract JSON data from request
       const data = JSON.parse(request.responseText);
       var content;
-      // here modify this so if user id from server is the same as the client one, show one class otherwise the other class
-      if (data.messages.length === 0) {
-        const mes = {"content": ""};
-        content = template({'values': mes})
-      } else {
-        content = template({'values': data.messages});
+      // If user id from server is the same as the client one, show one class otherwise the other class:
+      if (data.messages.length > 0) {
+        let messageResponse = data.messages;
+        for (let i = 0; i < messageResponse.length; i++) {
+          let classMes;
+          // if user for the message is the same as session user, give one class
+          if (messageResponse[i].user === sessionStorage.getItem('userid')) {
+            classMes = 'same-user';
+          } else {
+            classMes = 'dif_user';
+          }
+          messageResponse[i].class = classMes;
+
+        }
+        content = template({'values': messageResponse});
+        document.querySelector('#messageDiv').innerHTML = content
       }
 
 
       // Update the result div
-      document.querySelector('#messageDiv').innerHTML = content
+      // document.querySelector('#messageDiv').innerHTML = content
   }
 
   // Add data to send with request
@@ -64,10 +74,17 @@ document.addEventListener('DOMContentLoaded', function () {
   // When connected, configure button
   socket.on('connect', () => {
       const button = document.querySelector('#sendMessage');
+
+      var userid;
+      if (!sessionStorage.getItem('userid')) {
+                       userid = 'Unknown';
+                     } else {
+                       userid = sessionStorage.getItem('userid');
+                     }
       // Each button should emit a "submit vote" event
       button.onclick = function() {
               let message = document.querySelector("#messContent");
-              socket.emit('send message', {'message': message.value, 'channel': button.dataset.channel});
+              socket.emit('send message', {'message': message.value, 'channel': button.dataset.channel, 'user': userid});
               message.value = '';
           };
       });
@@ -75,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // When a message is announced append to div:
   socket.on('receive message', data => {
       const p = document.createElement('p');
-      p.innerHTML = `${data.message}`;
+      p.innerHTML = `${data.user} says ${data.message}`;
       document.querySelector('#messageDiv').append(p);
   });
 

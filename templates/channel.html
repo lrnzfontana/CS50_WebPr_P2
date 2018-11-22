@@ -7,9 +7,11 @@
 <script type="text/template" id = 'channelNameTemp'>
 {% raw %}
 // <p class = "{{ this.class }}">{{ this.message }}</p>
+{{#if values}}
 {{#each values}}
-  <p>{{ this.content }}</p>
+  <p class = "{{ this.class }}">{{ this.user }} says {{ this.content }}</p>
 {{/each}}
+{{/if}}
 {% endraw %}
 </script>
 {% endblock %}
