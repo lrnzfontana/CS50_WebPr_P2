@@ -4,6 +4,7 @@ from flask import Flask, session, request, render_template, redirect, jsonify
 from flask_session import Session
 from flask_socketio import SocketIO, emit
 from functools import wraps
+import datetime
 ## import json
 
 
@@ -30,14 +31,15 @@ def login_required(f):
 
 @socketio.on("send message")
 def mess(data):
+    tstamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     message = data["message"]
     user = data["user"]
     # Make dictionary(for now only message content, then add user id)
-    message_dict = {"content": message, "user": user}
+    message_dict = {"content": message, "user": user, "timestamp": tstamp}
     channel = data["channel"]
     # add message:
     channel_messages[channel].append(message_dict)
-    emit("receive message", {"message": message, "user": user}, broadcast=True)
+    emit("receive message", {"message": message, "user": user, "timestamp": tstamp}, broadcast=True)
 
 
 @app.route("/", methods=["GET", "POST"])

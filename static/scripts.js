@@ -4,12 +4,21 @@ toggleChannelList = function() {
     listChan.style.display = "none";
   }
   else {
-    listChan.style.display = ""
+    listChan.style.display = "block";
   }
+}
+
+setHeight = function() {
+  // set chhannel list to span the viewport:
+  var lc = document.querySelector("#listChannels");
+  var fp = document.querySelector("#acChannelsPar");
+  lc.style.height = document.documentElement.scrollHeight - fp.clientHeight - 50 + "px";
 }
 
 
 document.addEventListener('DOMContentLoaded', function () {
+
+  setHeight();
 
   document.querySelector("#toggleChanBut").onclick = toggleChannelList;
 

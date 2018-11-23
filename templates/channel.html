@@ -6,10 +6,14 @@
 <script type="text/javascript" src="{{ url_for('static', filename='channelScript.js') }}"></script>
 <script type="text/template" id = 'channelNameTemp'>
 {% raw %}
-// <p class = "{{ this.class }}">{{ this.message }}</p>
 {{#if values}}
 {{#each values}}
-  <p class = "{{ this.class }}">{{ this.user }} says {{ this.content }}</p>
+  <div class = "{{ this.class }}">
+    <h4 class = 'message-head'>{{ this.user }}</h4>
+    <p class = 'message-tstamp'>{{ this.timestamp }}</p>
+    <hr class = 'message-divider'>
+    <p class = 'message-body'>{{ this.content }}</p>
+  </div>
 {{/each}}
 {{/if}}
 {% endraw %}
@@ -19,10 +23,10 @@
 {% block content1 %}
 <h3>Welcome to the {{ channel }} Channel!</h3>
 
-<textarea class="form-control" id = "messContent" rows="1" placeholder="Write your message"></textarea>
-<button data-channel = "{{ channel }}" type="button" class="btn btn-primary mt-1" id = "sendMessage">Send</button>
-
 <div class="" id="messageDiv">
 </div>
+
+<textarea class="form-control" id = "messContent" rows="1" placeholder="Write your message"></textarea>
+<button data-channel = "{{ channel }}" type="button" class="btn btn-primary mt-1 mb-3" id = "sendMessage">Send</button>
 
 {% endblock %}

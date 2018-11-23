@@ -4,8 +4,15 @@ toggleChannelList = function() {
     listChan.style.display = "none";
   }
   else {
-    listChan.style.display = ""
+    listChan.style.display = "block";
   }
+}
+
+setHeight = function() {
+  // set chhannel list to span the viewport:
+  var lc = document.querySelector("#listChannels");
+  var fp = document.querySelector("#acChannelsPar");
+  lc.style.height = document.documentElement.scrollHeight - fp.clientHeight - 50 + "px";
 }
 
 // Send request when channel page is loaded, to get messages from server:
@@ -34,7 +41,7 @@ sendRequest = function() {
           if (messageResponse[i].user === sessionStorage.getItem('userid')) {
             classMes = 'same-user';
           } else {
-            classMes = 'dif_user';
+            classMes = 'dif-user';
           }
           messageResponse[i].class = classMes;
 
@@ -54,6 +61,9 @@ sendRequest = function() {
 
   // Send request
   request.send(data);
+
+  setHeight();
+
   return false;
 
 }
@@ -63,7 +73,6 @@ sendRequest = function() {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-  alert('yoo');
 
   document.querySelector("#toggleChanBut").onclick = toggleChannelList;
 
@@ -91,9 +100,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // When a message is announced append to div:
   socket.on('receive message', data => {
-      const p = document.createElement('p');
-      p.innerHTML = `${data.user} says ${data.message}`;
-      document.querySelector('#messageDiv').append(p);
+      const div = document.createElement('div');
+      // If the current user has sent the message one class, otherwise another:
+      var classMes;
+      if (data.user === sessionStorage.getItem('userid')) {
+        classMes = "same-user";
+      } else {
+        classMes = "dif-user";
+      }
+
+      div.innerHTML = `<div class = ${classMes}><h4 class = 'message-head'>${data.user}</h4><p class = 'message-tstamp'>
+        ${data.timestamp}</p><hr class = 'message-divider'><p class = 'message-body'>${data.message}</p></div>`;
+      // p.innerHTML = `${data.user} says ${data.message}`;
+      document.querySelector('#messageDiv').append(div);
+
+      setHeight();
   });
 
 

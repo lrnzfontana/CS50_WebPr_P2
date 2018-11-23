@@ -18,16 +18,17 @@
     <div class="container">
       <div class="row">
           <div class="col-3">
-              <p class = 'lead'>Active Channels <i id="toggleChanBut" class="fas fa-plus-circle"></i></p>
-              <div id="chanlist">
-                <button type="button" class = "btn btn-primary" data-toggle = "modal" data-target = "#channelModal">Create a Channel</button>
+              <div class="activeChanEl">
+                <h id="acChannelsPar" style="font-weight:bold; font-size:1.3em;">Active Channels <i id="toggleChanBut" class="fas fa-plus-circle"></i></h>
               </div>
-        <ul class = "mt-3" id='listChannels'>
-          <li>Test</li>
+              <div id="chanlist" class="activeChanEl">
+                <button id = "createChanButton" type="button" class = "btn btn-primary" data-toggle = "modal" data-target = "#channelModal">Create a Channel</button>
+              </div>
+        <div class = "mt-3" id='listChannels'>
           {% for chan in channels %}
-          <li> <a href="/channel/{{ chan }}">{{ chan }}</a></li>
+          <a href="/channel/{{ chan }}" style="display:block;"><p class = "channelInList">{{ chan }}</p></a>
           {% endfor %}
-        </ul>
+        </div>
       </div>
       <!-- end column -->
       <div class="col-9">

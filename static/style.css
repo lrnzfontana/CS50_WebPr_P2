@@ -1,0 +1,88 @@
+
+textarea { overflow: : auto; }
+
+a {
+  color: black;
+}
+
+a:hover {
+  color:black;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#createChanButton {
+  background-color: #ff1a1a !important;
+  border-color: #ff1a1a !important;
+}
+
+
+#createChanButton:hover {
+  background-color: #CC1414 !important;
+  border-color: #CC1414 !important;
+}
+
+#chanlist {
+  display: none;
+}
+
+#listChannels {
+  background-color: #ffe6e6;
+  border-top: 8px solid #ff1a1a;
+  height: 100%;
+}
+
+.activeChanEl {
+  width:80%;
+  text-align:center;
+  margin-left:10%;
+  margin-right:10%;
+}
+
+.channelInList {
+  padding-left: 5%;
+  margin-top: 3px;
+  font-size: 1.1em;
+}
+
+.channelInList:hover {
+  background-color: #ff6666;
+}
+
+.same-user {
+  width: 45%;
+  margin-left: 55%;
+  background-color: #C1FAC3;
+  border-right: 8px solid #17C41F;
+}
+
+.dif-user {
+  width: 45%;
+  margin: 1px;
+  background-color: #cce6ff;
+  border-left: 8px solid blue;
+}
+
+.message-head {
+  margin: 0;
+  padding-left: 5px;
+}
+
+.message-tstamp {
+  font-size: 0.6em;
+  padding-left: 5px;
+  margin-bottom: 2px;
+}
+
+.message-body {
+  margin-top: 0.1em;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-top: 0px;
+}
+
+.message-divider {
+  margin-top: 7px;
+  margin-bottom: 0px;
+}
