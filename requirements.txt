@@ -4,4 +4,6 @@ Flask-SocketIO
 datetime
 Flask-Session
 gunicorn
-eventlet
+gevent
+gevent-websocket
+gevent-socketio
