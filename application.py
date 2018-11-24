@@ -3,9 +3,7 @@ import os
 from flask import Flask, session, request, render_template, redirect, jsonify
 from flask_session import Session
 from flask_socketio import SocketIO, emit
-from functools import wraps
 import datetime
-## import json
 
 
 app = Flask(__name__)
@@ -21,13 +19,10 @@ channel_list = []
 user_list = []
 channel_messages = {}
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is not None:
-            return render_template("welcome.html", uname = session['user_id'], channels = channel_list)
-        return f(*args, **kwargs)
-    return decorated_function
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
 
 @socketio.on("send message")
 def mess(data):
@@ -37,15 +32,26 @@ def mess(data):
     # Make dictionary(for now only message content, then add user id)
     message_dict = {"content": message, "user": user, "timestamp": tstamp}
     channel = data["channel"]
-    # add message:
+    # add message (and drop one message if more than 100):
+    if len(channel_messages[channel]) > 100:
+        del channel_messages[channel][0]
     channel_messages[channel].append(message_dict)
     emit("receive message", {"message": message, "user": user, "timestamp": tstamp}, broadcast=True)
 
 
 @app.route("/", methods=["GET", "POST"])
-@login_required
 def index():
+
+    if session.get("user_id") is not None and session.get("channel") is not None:
+        chanName = session.get("channel")
+        return redirect(f"/channel/{chanName}")
+
+    # delete channel in session if exists
+    session.pop("channel", None)
+
     if request.method == 'GET':
+        if session.get("user_id") is not None:
+            return render_template("welcome.html", uname = session['user_id'], channels = channel_list)
         return render_template("index.html", channels = channel_list)
 
     if request.method == 'POST':
@@ -60,10 +66,16 @@ def handle_channel():
     chanName = request.form.get("channame")
     channel_list.append(chanName)
     channel_messages[chanName] = []
-    return render_template("newchannel.html", channel = chanName, channels = channel_list)
+    return redirect(f"/channel/{chanName}")
 
 @app.route("/channel/<string:channame>")
 def channelContent(channame):
+    if session.get("user_id") is None:
+        return redirect("/")
+
+    # set channnel name
+    session['channel'] = channame
+
     return render_template("channel.html", channel = channame, channels = channel_list,
     messages = channel_messages[channame])
 

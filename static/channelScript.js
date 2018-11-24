@@ -8,12 +8,18 @@ toggleChannelList = function() {
   }
 }
 
-setHeight = function() {
-  // set chhannel list to span the viewport:
-  var lc = document.querySelector("#listChannels");
-  var fp = document.querySelector("#acChannelsPar");
-  lc.style.height = document.documentElement.scrollHeight - fp.clientHeight - 50 + "px";
+
+removeUser = function() {
+  localStorage.removeItem("userid");
 }
+
+
+// setHeight = function() {
+//   // set chhannel list to span the viewport:
+//   var lc = document.querySelector("#listChannels");
+//   var fp = document.querySelector("#acChannelsPar");
+//   lc.style.height = document.documentElement.scrollHeight - fp.clientHeight - 50 + "px";
+// }
 
 // Send request when channel page is loaded, to get messages from server:
 sendRequest = function() {
@@ -38,7 +44,7 @@ sendRequest = function() {
         for (let i = 0; i < messageResponse.length; i++) {
           let classMes;
           // if user for the message is the same as session user, give one class
-          if (messageResponse[i].user === sessionStorage.getItem('userid')) {
+          if (messageResponse[i].user === localStorage.getItem('userid')) {
             classMes = 'same-user';
           } else {
             classMes = 'dif-user';
@@ -62,7 +68,7 @@ sendRequest = function() {
   // Send request
   request.send(data);
 
-  setHeight();
+  //setHeight();
 
   return false;
 
@@ -76,7 +82,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.querySelector("#toggleChanBut").onclick = toggleChannelList;
 
+  //document.querySelector("#logoutButton").onclick = removeUser;
+
   sendRequest();
+
+  // click button when pressing ctrl+enter:
+  var textArea = document.querySelector("#messContent");
+  textArea.onkeyup = function(e) {
+    if (e.keyCode === 10 || e.keyCode  == 13 && e.ctrlKey) {
+      document.querySelector("#sendMessage").click();
+    }
+  }
 
   var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -85,10 +101,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const button = document.querySelector('#sendMessage');
 
       var userid;
-      if (!sessionStorage.getItem('userid')) {
+      if (!localStorage.getItem('userid')) {
                        userid = 'Unknown';
                      } else {
-                       userid = sessionStorage.getItem('userid');
+                       userid = localStorage.getItem('userid');
                      }
       // Each button should emit a "submit vote" event
       button.onclick = function() {
@@ -103,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const div = document.createElement('div');
       // If the current user has sent the message one class, otherwise another:
       var classMes;
-      if (data.user === sessionStorage.getItem('userid')) {
+      if (data.user === localStorage.getItem('userid')) {
         classMes = "same-user";
       } else {
         classMes = "dif-user";
@@ -114,58 +130,9 @@ document.addEventListener('DOMContentLoaded', function () {
       // p.innerHTML = `${data.user} says ${data.message}`;
       document.querySelector('#messageDiv').append(div);
 
-      setHeight();
+      //setHeight();
   });
 
 
 }
 )
-
-
-
-
-
-// document.addEventListener('DOMContentLoaded', function() {
-//
-//   // arrays of channel names:
-//   if (!localStorage.getItem('channels')) {
-//                     localStorage.setItem('channels', JSON.stringify([]));
-//                   }
-//
-//
-//   // refresh list
-//   refreshList = function() {
-//     let channels = JSON.parse(localStorage.getItem("channels"));
-//     document.querySelector("#listChannels").innerHTML = "";
-//     for (let i=0; i < channels.length; i++) {
-//       const liEl = document.createElement('li');
-//             liEl.innerHTML = channels[i];
-//             document.querySelector('#listChannels').append(liEl);
-//     }
-//   }
-//
-//   // function to append new channel to list:
-//   appendChannelList = function() {
-//     let newChannel = document.querySelector("#chanNameText").value;
-//     let channels = JSON.parse(localStorage.getItem("channels"));
-//     channels[channels.length] = newChannel;
-//     localStorage.setItem('channels', JSON.stringify(channels));
-//     refreshList()
-//   }
-//
-//   toggleChannelList = function() {
-//     let listChan = document.querySelector("#chanlist")
-//     if (listChan.style.display != "none") {
-//       listChan.style.display = "none";
-//     }
-//     else {
-//       listChan.style.display = ""
-//     }
-//   }
-//
-//   document.querySelector("#toggleChanBut").onclick = toggleChannelList;
-//   document.querySelector("#createChanButModal").onclick = appendChannelList;
-//
-//   refreshList();
-//
-// }) // end dom content loaded

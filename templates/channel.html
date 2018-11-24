@@ -21,12 +21,16 @@
 {% endblock %}
 
 {% block content1 %}
-<h3>Welcome to the {{ channel }} Channel!</h3>
+<div class="p-3">
+
+
+<h3 class="mb-3">Welcome to the {{ channel }} Channel!</h3>
 
 <div class="" id="messageDiv">
 </div>
 
-<textarea class="form-control" id = "messContent" rows="1" placeholder="Write your message"></textarea>
+<textarea class="form-control" id = "messContent" rows="2" placeholder="Write your message"></textarea>
 <button data-channel = "{{ channel }}" type="button" class="btn btn-primary mt-1 mb-3" id = "sendMessage">Send</button>
+</div>
 
 {% endblock %}

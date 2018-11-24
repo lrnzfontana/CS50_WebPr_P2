@@ -15,9 +15,21 @@
   </head>
   <body>
 
-    <div class="container">
+    <nav class="navbar fixed-top" style="margin-bottom: 0px;">
+  <a href="/" class='text-navbar'>
+    <span style="color:#ff1a1a; font-size:2em;">C</span><span style="color:#17C41F; font-size:2em;">H</span>
+    <span style="color:#ff1a1a; font-size:2em;">A</span><span style="color:#17C41F; font-size:2em;">T</span>
+    <span style="color:#ff1a1a; font-size:2em;">T</span><span style="color:#17C41F; font-size:2em;">E</span>
+    <span style="color:#ff1a1a; font-size:2em;">R</span>
+  </a>
+  {% if session['user_id'] %}
+  <a class="nav-item nav-link sidebar-text" id = "logoutButton" href="/logout"><span class="mr-1"><i class="fas fa-sign-in-alt"></i></span>Logout</a>
+  {% endif %}
+  </nav>
+
+    <div class="container-fluid" style="margin-top: 0px;">
       <div class="row">
-          <div class="col-3">
+          <div class="col-lg-3 col-5 fixed-top fixed-bottom pt-4 sidebar">
               <div class="activeChanEl">
                 <h id="acChannelsPar" style="font-weight:bold; font-size:1.3em;">Active Channels <i id="toggleChanBut" class="fas fa-plus-circle"></i></h>
               </div>
@@ -26,12 +38,12 @@
               </div>
         <div class = "mt-3" id='listChannels'>
           {% for chan in channels %}
-          <a href="/channel/{{ chan }}" style="display:block;"><p class = "channelInList">{{ chan }}</p></a>
+          <a href="/channel/{{ chan }}" style="display:block;" class="linkChannel"><p class = "channelInList">{{ chan }}</p></a>
           {% endfor %}
         </div>
       </div>
       <!-- end column -->
-      <div class="col-9">
+      <div class="col-lg-8 col-6 offset-lg-3 offset-5 pt-4 pl-3" style = "top:64px;">
         {% block content1 %}
        {% endblock %}
       </div>
