@@ -1,2 +1,6 @@
 Flask
 Flask-SocketIO
+
+datetime
+Flask-Session
+gunicorn
