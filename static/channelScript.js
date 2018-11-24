@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   //var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-  var socket = io.connect("https://cs50-chatter.herokuapp.com/");
+  var socket = io.connect("/");
 
   // When connected, configure button
   socket.on('connect', () => {
